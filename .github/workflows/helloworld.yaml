@@ -1,25 +1,39 @@
-name: node js workflow
+name: Node.js Workflow
 
 on:
   push:
     branches:
-      -main
+      - main
+
 jobs:
-  build :
-    steps:
-      -uses: actions/checkout@v2
-      -uses: actions/setup-node@v2
-      with:
-        node-version: "14.x"
-      -run: npm install
-      -run: npm test
-  build:
+  build-test:
     runs-on: ubuntu-latest
-    needs: [build]
+
     steps:
-      -uses: actions/checkout@v2
-      -uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: 
-        heroku_email:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+
+      - name: Install dependencies and run tests
+        run: |
+          npm install
+          npm test
+
+  deploy-heroku:
+    runs-on: ubuntu-latest
+    needs: [build-test]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: YourHerokuAppNameHere
+          heroku_email: your_email@example.com
