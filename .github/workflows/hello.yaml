@@ -16,11 +16,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "14.x"
+          node-version: "18.x"
 
       - name: Install dependencies and run tests
         run: npm install
-        
+
       - name: Build project assets
         run: npm run build
 
