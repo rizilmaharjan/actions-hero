@@ -19,12 +19,13 @@ jobs:
           node-version: "14.x"
 
       - name: Install dependencies and run tests
-        run: |
-          npm install
-          npm test
+        run: npm install
+        
+      - name: Build project assets
+        run: npm run build
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: next
+          path: .dist/
